@@ -1,7 +1,7 @@
 name: render-cold-start
 on:
   schedule:
-    - cron: '5/* * * * *'
+    - cron: '1/5 * * * *'
 
 jobs:
   build:
