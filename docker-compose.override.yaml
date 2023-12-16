@@ -2,7 +2,7 @@ version: '3.4'
 
 # # TO USE THIS FILE, FIRST UNCOMMENT THE FOLLOWING LINE ('services:')
 
-# services:
+services:
 
 # # THEN UNCOMMENT ONLY THE SECTION OR SECTIONS CONTAINING THE CHANGES YOU WANT TO APPLY
 # # SAVE THIS FILE AS 'docker-compose.override.yaml'
@@ -24,19 +24,19 @@ version: '3.4'
 #   api:
 #     image: ghcr.io/danny-avila/librechat-api:latest
 
-# # ADD MONGO-EXPRESS
-#   mongo-express:
-#     image: mongo-express
-#     container_name: mongo-express
-#     environment:
-#       ME_CONFIG_MONGODB_SERVER: mongodb
-#       ME_CONFIG_BASICAUTH_USERNAME: admin
-#       ME_CONFIG_BASICAUTH_PASSWORD: password
-#     ports:
-#       - '8081:8081'
-#     depends_on:
-#       - mongodb
-#     restart: always
+# ADD MONGO-EXPRESS
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mongodb
+    restart: always
 
 # # USE MONGODB V4.4.18 - FOR OLDER CPU WITHOUT AVX SUPPORT
 #   mongodb:
@@ -52,9 +52,9 @@ version: '3.4'
 #     entrypoint: ""
 
 # # EXPOSE MONGODB PORTS - USE CAREFULLY, THIS MAKES YOUR DATABASE VULNERABLE TO ATTACKS
-#   mongodb:
-#     ports:
-#       - 27018:27017
+  mongodb:
+    ports:
+      - 27018:27017
 
 # # DISABLE MEILISEARCH
 #   meilisearch:
@@ -62,6 +62,6 @@ version: '3.4'
 #       - donotstart
 
 # # EXPOSE MEILISEARCH PORTS - DO NOT USE THE DEFAULT VALUE FOR THE MASTER KEY IF YOU DO THIS
-#   meilisearch:
-#     ports:
-#       - 7700:7700
+  meilisearch:
+    ports:
+      - 7700:7700
