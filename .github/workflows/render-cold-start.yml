@@ -11,4 +11,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run script
         run: |
-          curl https://librechat-5nky.onrender.com/
+          curl ${{secrets.HOST}}
