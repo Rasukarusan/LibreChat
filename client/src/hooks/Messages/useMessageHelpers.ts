@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import copy from 'copy-to-clipboard';
 import type { TMessage } from 'librechat-data-provider';
 import type { TMessageProps } from '~/common';
@@ -23,6 +23,7 @@ export default function useMessageHelpers(props: TMessageProps) {
   const { text, children, messageId = null, isCreatedByUser } = message ?? {};
   const edit = messageId === currentEditId;
   const isLast = !children?.length;
+  const [isExpand, setIsExpand] = useState(false);
 
   useEffect(() => {
     if (!message) {
@@ -63,13 +64,21 @@ export default function useMessageHelpers(props: TMessageProps) {
     regenerate(message);
   };
 
-  const copyToClipboard = (setIsCopied: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const copyToClipboard = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    setIsCopied: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => {
     setIsCopied(true);
     copy(text ?? '');
+    e.stopPropagation();
 
     setTimeout(() => {
       setIsCopied(false);
     }, 3000);
+  };
+
+  const handleExpand = () => {
+    setIsExpand(!isExpand);
   };
 
   return {
@@ -85,5 +94,7 @@ export default function useMessageHelpers(props: TMessageProps) {
     handleContinue,
     copyToClipboard,
     regenerateMessage,
+    isExpand,
+    setIsExpand,
   };
 }
