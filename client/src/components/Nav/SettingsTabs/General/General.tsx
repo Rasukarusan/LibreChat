@@ -16,6 +16,7 @@ import { Dropdown } from '~/components/ui';
 import DangerButton from '../DangerButton';
 import ModularChat from './ModularChat';
 import store from '~/store';
+import CollapsedLineNumbers from './CollapsedLineNumbers';
 
 export const ThemeSelector = ({
   theme,
@@ -113,6 +114,7 @@ export const LangSelector = ({
 };
 
 function General() {
+  const localize = useLocalize();
   const { theme, setTheme } = useContext(ThemeContext);
   const clearConvosMutation = useClearConversationsMutation();
   const [confirmClear, setConfirmClear] = useState(false);
@@ -191,6 +193,9 @@ function General() {
         </div>
         <div className="border-b pb-3 last-of-type:border-b-0 dark:border-gray-700">
           <ModularChat />
+        </div>
+        <div className="border-b pb-3 last-of-type:border-b-0 dark:border-gray-700">
+          <CollapsedLineNumbers />
         </div>
       </div>
     </Tabs.Content>
