@@ -12,6 +12,9 @@ const { logger } = require('~/config');
 
 const registrationController = async (req, res) => {
   try {
+    // ユーザー登録させない
+    return res.status(403).json({ message: 'ユーザー登録はさせません。' });
+    // eslint-disable-next-line
     const response = await registerUser(req.body);
     if (response.status === 200) {
       const { status, user } = response;
@@ -83,6 +86,11 @@ const refreshController = async (req, res) => {
     }
 
     const userId = payload.id;
+    // 環境変数で定めたユーザーのみログインを許可
+    if (user.email !== process.env.MY_USER) {
+      logger.error(`[refreshController] これは私が定めたユーザーではありません。 - ${user.email}`);
+      return res.status(401).redirect('/login');
+    }
 
     if (process.env.NODE_ENV === 'CI') {
       const token = await setAuthTokens(userId, res);
