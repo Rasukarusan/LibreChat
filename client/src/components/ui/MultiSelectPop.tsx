@@ -1,4 +1,3 @@
-import React, { useMemo, useState } from 'react';
 import { Wrench } from 'lucide-react';
 import { Root, Trigger, Content, Portal } from '@radix-ui/react-popover';
 import type { TPlugin } from 'librechat-data-provider';
@@ -80,11 +79,7 @@ function MultiSelectPop({
                       {value.map((v, i) => (
                         <div key={i} className="relative">
                           {v.icon ? (
-                            <img
-                              src={v.icon}
-                              alt={`${v} logo`}
-                              className="icon-lg rounded-sm bg-white"
-                            />
+                            <img src={v.icon} alt={`${v} logo`} className="icon-lg rounded-sm" />
                           ) : (
                             <Wrench className="icon-lg rounded-sm bg-white" />
                           )}
@@ -119,7 +114,7 @@ function MultiSelectPop({
               side="bottom"
               align="center"
               className={cn(
-                'mt-2 max-h-60 min-w-full overflow-hidden overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-700 dark:text-white',
+                'mt-2 max-h-[52vh] min-w-full overflow-hidden overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-700 dark:text-white',
                 hasSearchRender && 'relative',
               )}
             >
@@ -141,7 +136,7 @@ function MultiSelectPop({
                         <img
                           src={option.icon}
                           alt={`${option.name} logo`}
-                          className="icon-sm mr-1 rounded-sm bg-white bg-cover dark:bg-gray-800"
+                          className="icon-sm mr-1 rounded-sm bg-cover"
                         />
                       ) : (
                         <Wrench className="icon-sm mr-1 rounded-sm bg-white bg-cover dark:bg-gray-800" />

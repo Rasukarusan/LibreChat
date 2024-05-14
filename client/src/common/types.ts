@@ -1,24 +1,33 @@
 import { FileSources } from 'librechat-data-provider';
+import type * as InputNumberPrimitive from 'rc-input-number';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { SetterOrUpdater } from 'recoil';
 import type {
-  TConversation,
-  TMessage,
-  TPreset,
-  TLoginUser,
   TUser,
-  EModelEndpoint,
   Action,
+  TPreset,
+  TPlugin,
+  TMessage,
+  TLoginUser,
   AuthTypeEnum,
+  TConversation,
+  EModelEndpoint,
   AuthorizationTypeEnum,
+  TSetOption as SetOption,
   TokenExchangeMethodEnum,
 } from 'librechat-data-provider';
 import type { UseMutationResult } from '@tanstack/react-query';
 import type { LucideIcon } from 'lucide-react';
 
+export type TPluginMap = Record<string, TPlugin>;
+
 export type GenericSetter<T> = (value: T | ((currentValue: T) => T)) => void;
 
 export type LastSelectedModels = Record<EModelEndpoint, string>;
+
+export type LocalizeFunction = (phraseKey: string, ...values: string[]) => string;
+
+export const mainTextareaId = 'prompt-textarea';
 
 export enum IconContext {
   landing = 'landing',
@@ -26,6 +35,16 @@ export enum IconContext {
   nav = 'nav',
   message = 'message',
 }
+
+export type IconMapProps = {
+  className?: string;
+  iconURL?: string;
+  context?: 'landing' | 'menu-item' | 'nav' | 'message';
+  endpoint?: string | null;
+  assistantName?: string;
+  avatar?: string;
+  size?: number;
+};
 
 export type NavLink = {
   title: string;
@@ -89,14 +108,17 @@ export type AssistantPanelProps = {
 
 export type AugmentedColumnDef<TData, TValue> = ColumnDef<TData, TValue> & ColumnMeta;
 
-export type TSetOption = (
-  param: number | string,
-) => (newValue: number | string | boolean | Partial<TPreset>) => void;
+export type TSetOption = SetOption;
+
 export type TSetExample = (
   i: number,
   type: string,
   newValue: number | string | boolean | null,
 ) => void;
+
+export type OnInputNumberChange = InputNumberPrimitive.InputNumberProps['onChange'];
+
+export const defaultDebouncedDelay = 450;
 
 export enum ESide {
   Top = 'top',
@@ -181,6 +203,7 @@ export type TAskProps = {
 export type TOptions = {
   editedMessageId?: string | null;
   editedText?: string | null;
+  resubmitFiles?: boolean;
   isRegenerate?: boolean;
   isContinued?: boolean;
   isEdited?: boolean;
@@ -303,6 +326,9 @@ export type Option = Record<string, unknown> & {
   value: string | number | null;
 };
 
+export type OptionWithIcon = Option & { icon?: React.ReactNode };
+export type MentionOption = OptionWithIcon & { type: string; value: string; description?: string };
+
 export type TOptionSettings = {
   showExamples?: boolean;
   isCodeChat?: boolean;
@@ -326,3 +352,9 @@ export interface ExtendedFile {
 }
 
 export type ContextType = { navVisible: boolean; setNavVisible: (visible: boolean) => void };
+
+export interface SwitcherProps {
+  endpoint?: EModelEndpoint | null;
+  endpointKeyProvided: boolean;
+  isCollapsed: boolean;
+}
