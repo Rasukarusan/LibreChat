@@ -9,7 +9,6 @@ const {
   requestPasswordReset,
 } = require('~/server/services/AuthService');
 const { logger } = require('~/config');
-const { isMyUser } = require('../utils/user');
 
 const registrationController = async (req, res) => {
   try {
@@ -82,12 +81,6 @@ const refreshController = async (req, res) => {
     const userId = payload.id;
     const user = await User.findOne({ _id: userId });
     if (!user) {
-      return res.status(401).redirect('/login');
-    }
-
-    // 環境変数で定めたユーザーのみログインを許可
-    if (!isMyUser(user.email)) {
-      logger.error(`[refreshController] これは私が定めたユーザーではありません。 - ${user.email}`);
       return res.status(401).redirect('/login');
     }
 
