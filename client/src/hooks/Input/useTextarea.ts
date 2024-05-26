@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce';
 import { useEffect, useRef, useCallback } from 'react';
-import { EModelEndpoint } from 'librechat-data-provider';
+import { isAssistantsEndpoint } from 'librechat-data-provider';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import type { TEndpointOption } from 'librechat-data-provider';
 import type { KeyboardEvent } from 'react';
@@ -10,6 +10,7 @@ import useGetSender from '~/hooks/Conversations/useGetSender';
 import useFileHandling from '~/hooks/Files/useFileHandling';
 import { useChatContext } from '~/Providers/ChatContext';
 import useLocalize from '~/hooks/useLocalize';
+import { globalAudioId } from '~/common';
 import store from '~/store';
 
 type KeyEvent = KeyboardEvent<HTMLTextAreaElement>;
@@ -45,10 +46,11 @@ export default function useTextarea({
   const { conversationId, jailbreak, endpoint = '', assistant_id } = conversation || {};
   const isNotAppendable =
     ((latestMessage?.unfinished && !isSubmitting) || latestMessage?.error) &&
-    endpoint !== EModelEndpoint.assistants;
+    !isAssistantsEndpoint(endpoint);
   // && (conversationId?.length ?? 0) > 6; // also ensures that we don't show the wrong placeholder
 
-  const assistant = endpoint === EModelEndpoint.assistants && assistantMap?.[assistant_id ?? ''];
+  const assistant =
+    isAssistantsEndpoint(endpoint) && assistantMap?.[endpoint ?? '']?.[assistant_id ?? ''];
   const assistantName = (assistant && assistant?.name) || '';
 
   // auto focus to input, when enter a conversation.
@@ -86,9 +88,11 @@ export default function useTextarea({
       if (disabled) {
         return localize('com_endpoint_config_placeholder');
       }
+      const currentEndpoint = conversation?.endpoint ?? '';
+      const currentAssistantId = conversation?.assistant_id ?? '';
       if (
-        conversation?.endpoint === EModelEndpoint.assistants &&
-        (!conversation?.assistant_id || !assistantMap?.[conversation?.assistant_id ?? ''])
+        isAssistantsEndpoint(currentEndpoint) &&
+        (!currentAssistantId || !assistantMap?.[currentEndpoint]?.[currentAssistantId ?? ''])
       ) {
         return localize('com_endpoint_assistant_placeholder');
       }
@@ -97,10 +101,9 @@ export default function useTextarea({
         return localize('com_endpoint_message_not_appendable');
       }
 
-      const sender =
-        conversation?.endpoint === EModelEndpoint.assistants
-          ? getAssistantName({ name: assistantName, localize })
-          : getSender(conversation as TEndpointOption);
+      const sender = isAssistantsEndpoint(currentEndpoint)
+        ? getAssistantName({ name: assistantName, localize })
+        : getSender(conversation as TEndpointOption);
 
       return `${localize('com_endpoint_message')} ${sender ? sender : 'ChatGPT'}…`;
     };
@@ -176,6 +179,11 @@ export default function useTextarea({
       }
 
       if (isNonShiftEnter && !isComposing?.current) {
+        const globalAudio = document.getElementById(globalAudioId) as HTMLAudioElement;
+        if (globalAudio) {
+          console.log('Unmuting global audio');
+          globalAudio.muted = false;
+        }
         submitButtonRef.current?.click();
       }
     },
