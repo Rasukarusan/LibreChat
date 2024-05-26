@@ -1,31 +1,31 @@
 version: 1.0.5
 cache: true
 # fileStrategy: "firebase"  # If using Firebase CDN
-fileConfig:
-  endpoints:
-    assistants:
-      fileLimit: 5
-      # Maximum size for an individual file in MB
-      fileSizeLimit: 10
-      # Maximum total size for all files in a single request in MB
-      totalSizeLimit: 50
-      # In case you wish to limit certain filetypes
-      # supportedMimeTypes:
-      #   - "image/.*"
-      #   - "application/pdf"
-    openAI:
-    # Disables file uploading to the OpenAI endpoint
-      disabled: true
-    default:
-      totalSizeLimit: 20
-    # Example for custom endpoints
-    # YourCustomEndpointName:
-    #   fileLimit: 2
-    #   fileSizeLimit: 5
-  # Global server file size limit in MB
-  serverFileSizeLimit: 100
-  # Limit for user avatar image size in MB, default: 2 MB
-  avatarSizeLimit: 4
+# fileConfig:
+#   endpoints:
+#     assistants:
+#       fileLimit: 5
+#       # Maximum size for an individual file in MB
+#       fileSizeLimit: 10
+#       # Maximum total size for all files in a single request in MB
+#       totalSizeLimit: 50
+#       # In case you wish to limit certain filetypes
+#       # supportedMimeTypes:
+#       #   - "image/.*"
+#       #   - "application/pdf"
+#     openAI:
+#     # Disables file uploading to the OpenAI endpoint
+#       disabled: true
+#     default:
+#       totalSizeLimit: 20
+#     # Example for custom endpoints
+#     # YourCustomEndpointName:
+#     #   fileLimit: 2
+#     #   fileSizeLimit: 5
+#   # Global server file size limit in MB
+#   serverFileSizeLimit: 100
+#   # Limit for user avatar image size in MB, default: 2 MB
+#   avatarSizeLimit: 4
 rateLimits:
   fileUploads:
     ipMax: 100
@@ -40,15 +40,15 @@ registration:
     - "example.com"
     - "anotherdomain.com"
 endpoints:
-  assistants:
-    # Disable Assistants Builder Interface by setting to `true`
-    disableBuilder: false
-    # Polling interval for checking assistant updates
-    pollIntervalMs: 750
-    # Timeout for assistant operations
-    timeoutMs: 180000
-    # Should only be one or the other, either `supportedIds` or `excludedIds`
-    supportedIds: ["asst_supportedAssistantId1", "asst_supportedAssistantId2"]
+  # assistants:
+  #   # Disable Assistants Builder Interface by setting to `true`
+  #   disableBuilder: false
+  #   # Polling interval for checking assistant updates
+  #   pollIntervalMs: 750
+  #   # Timeout for assistant operations
+  #   timeoutMs: 180000
+  #   # Should only be one or the other, either `supportedIds` or `excludedIds`
+  #   supportedIds: ["asst_supportedAssistantId1", "asst_supportedAssistantId2"]
     # excludedIds: ["asst_excludedAssistantId"]
     # (optional) Models that support retrieval, will default to latest known OpenAI models that support the feature
     # retrievalModels: ["gpt-4-turbo-preview"]
